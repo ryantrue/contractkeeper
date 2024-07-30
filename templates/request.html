@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявка</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<div class="form-container">
+    <h1>Заявка</h1>
+    <form action="/submit" method="post">
+        <div class="form-group">
+            <label for="contractor">Контрагент:</label>
+            <input type="text" id="contractor" name="contractor">
+        </div>
+        <div class="form-group">
+            <label for="contract">Договор:</label>
+            <input type="text" id="contract" name="contract">
+        </div>
+        <div class="form-group">
+            <label for="contractDate">Дата договора:</label>
+            <input type="date" id="contractDate" name="contractDate">
+        </div>
+        <div class="form-group">
+            <label for="subject">Предмет договора:</label>
+            <input type="text" id="subject" name="subject">
+        </div>
+        <div class="form-group">
+            <label for="amount">Сумма:</label>
+            <input type="number" id="amount" name="amount" step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="contractAmount">Сумма договора:</label>
+            <input type="number" id="contractAmount" name="contractAmount" step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="article">Статья:</label>
+            <input type="text" id="article" name="article">
+        </div>
+        <div class="form-group">
+            <label for="startDate">Дата отсчета:</label>
+            <input type="date" id="startDate" name="startDate">
+        </div>
+        <div class="form-group">
+            <label for="deadline">Крайний срок:</label>
+            <select id="deadline" name="deadline">
+                {{range .DeadlineOptions}}
+                <option value="{{.}}">{{.}}</option>
+                {{end}}
+            </select>
+        </div>
+        <div class="form-group" id="fixedDateContainer" style="display:none;">
+            <label for="fixedDate">Фиксированная дата:</label>
+            <input type="date" id="fixedDate" name="fixedDate">
+        </div>
+        <div class="form-group">
+            <label for="paymentAccount">Счёт оплаты:</label>
+            <select id="paymentAccount" name="paymentAccount">
+                {{range .PaymentAccounts}}
+                <option value="{{.}}">{{.}}</option>
+                {{end}}
+            </select>
+        </div>
+        <button type="submit">Отправить</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('deadline').addEventListener('change', function() {
+        var fixedDateContainer = document.getElementById('fixedDateContainer');
+        if (this.value === 'фиксированная дата') {
+            fixedDateContainer.style.display = 'block';
+        } else {
+            fixedDateContainer.style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>
