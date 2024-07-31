@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список заявок</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<div class="form-container">
+    <h1>Список заявок</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Контрагент</th>
+            <th>Договор</th>
+            <th>Дата договора</th>
+            <th>Предмет</th>
+            <th>Сумма</th>
+            <th>Сумма договора</th>
+            <th>Статья</th>
+            <th>Дата отсчета</th>
+            <th>Крайний срок</th>
+            <th>Счет оплаты</th>
+            <th>Дата крайнего срока</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{range .Requests}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td>{{.Contractor}}</td>
+            <td>{{.Contract}}</td>
+            <td>{{.ContractDate}}</td>
+            <td>{{.Subject}}</td>
+            <td>{{.Amount}}</td>
+            <td>{{.ContractAmount}}</td>
+            <td>{{.Article}}</td>
+            <td>{{.StartDate}}</td>
+            <td>{{.Deadline}}</td>
+            <td>{{.PaymentAccount}}</td>
+            <td>{{.DeadlineDate}}</td>
+            <td>
+                <a href="/edit/{{.ID}}">Редактировать</a>
+                <form action="/delete/{{.ID}}" method="POST" style="display:inline;">
+                    <button type="submit">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {{end}}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

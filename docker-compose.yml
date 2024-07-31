@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: contractkeeper_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: contractkeeper
+    ports:
+      - "5433:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      - db
+      - migrate
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: contractkeeper_user
+      DB_PASSWORD: password
+      DB_NAME: contractkeeper
+
+  migrate:
+    image: migrate/migrate
+    entrypoint: ["sh", "-c", "echo 'Waiting for db to be ready...' && sleep 10 && migrate -source=file:///migrations -database=postgres://contractkeeper_user:password@db:5432/contractkeeper?sslmode=disable up"]
+    volumes:
+      - ./migrations:/migrations
+    depends_on:
+      - db
+
+volumes:
+  db-data:
