@@ -18,14 +18,10 @@ RUN go build -o /contractkeeper cmd/api/main.go
 FROM alpine:latest
 
 # Устанавливаем bash и необходимые зависимости
-RUN apk --no-cache add bash
+RUN apk --no-cache add bash busybox-extras
 
 # Копируем скомпилированное приложение из предыдущего этапа
 COPY --from=builder /contractkeeper /contractkeeper
-
-# Копируем wait-for-it скрипт и даем права на выполнение
-COPY wait-for-it.sh /wait-for-it.sh
-RUN chmod +x /wait-for-it.sh
 
 # Копируем шаблоны и статические файлы
 COPY templates /templates
@@ -33,6 +29,11 @@ COPY static /static
 
 # Устанавливаем переменные окружения
 ENV PORT=8080
+ENV DB_HOST=db
+ENV DB_PORT=5432
+ENV DB_USER=contractkeeper_user
+ENV DB_PASSWORD=password
+ENV DB_NAME=contractkeeper
 
 # Открываем порт
 EXPOSE 8080
@@ -41,5 +42,5 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s \
   CMD wget --quiet --spider http://localhost:$PORT/health || exit 1
 
-# Запускаем приложение с ожиданием базы данных
-ENTRYPOINT ["/wait-for-it.sh", "db:5432", "--", "/contractkeeper"]
+# Запускаем приложение
+CMD ["sh", "-c", "until nc -z $DB_HOST $DB_PORT; do echo waiting for database; sleep 2; done; /contractkeeper"]

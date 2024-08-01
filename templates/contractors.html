@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контрагенты</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<header class="header">
+    <div class="logo">Мой сайт</div>
+    <nav>
+        <a href="/dashboard">Главная</a>
+        <a href="/contractors">Контрагенты</a>
+        <a href="/contracts">Контракты</a>
+        <a href="/logout">Выйти</a>
+    </nav>
+</header>
+
+<div class="container">
+    <h1>Контрагенты</h1>
+    <a href="/contractors/new" class="btn">Добавить контрагента</a>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Наименование</th>
+            <th>ИНН</th>
+            <th>ОГРН</th>
+            <th>Реквизиты</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{range .Contractors}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td>{{.Name}}</td>
+            <td>{{.INN}}</td>
+            <td>{{.OGRN}}</td>
+            <td>{{.Requisites}}</td>
+        </tr>
+        {{end}}
+        </tbody>
+    </table>
+</div>
+
+<footer class="footer">
+    <p>Мой сайт © 2024</p>
+</footer>
+</body>
+</html>

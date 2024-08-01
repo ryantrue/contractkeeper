@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Редактировать заявку</title>
-    <link rel="stylesheet" href="/static/styles.css">
-</head>
-<body>
+{{ define "content" }}
 <div class="form-container">
     <h1>Редактировать заявку</h1>
     <form action="/update/{{.Request.ID}}" method="post">
@@ -65,7 +57,6 @@
         <button type="submit">Сохранить</button>
     </form>
 </div>
-
 <script>
     document.getElementById('deadline').addEventListener('change', function() {
         var fixedDateContainer = document.getElementById('fixedDateContainer');
@@ -83,5 +74,4 @@
         document.getElementById('fixedDateContainer').style.display = 'none';
     }
 </script>
-</body>
-</html>
+{{ end }}

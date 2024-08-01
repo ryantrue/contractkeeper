@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:14
+    image: postgres:16
     restart: always
     environment:
       POSTGRES_USER: contractkeeper_user
@@ -17,7 +17,6 @@ services:
     build: .
     depends_on:
       - db
-      - migrate
     ports:
       - "8080:8080"
     environment:
@@ -29,7 +28,7 @@ services:
 
   migrate:
     image: migrate/migrate
-    entrypoint: ["sh", "-c", "echo 'Waiting for db to be ready...' && sleep 10 && migrate -source=file:///migrations -database=postgres://contractkeeper_user:password@db:5432/contractkeeper?sslmode=disable up"]
+    entrypoint: ["sh", "-c", "until nc -z db 5432; do echo waiting for database; sleep 2; done; migrate -path=/migrations -database=postgres://contractkeeper_user:password@db:5432/contractkeeper?sslmode=disable up"]
     volumes:
       - ./migrations:/migrations
     depends_on:

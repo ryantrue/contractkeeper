@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создать контракт</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<header class="header">
+    <div class="logo">Мой сайт</div>
+    <nav>
+        <a href="/dashboard">Главная</a>
+        <a href="/contractors">Контрагенты</a>
+        <a href="/contracts">Контракты</a>
+        <a href="/logout">Выйти</a>
+    </nav>
+</header>
+
+<div class="form-container">
+    <h1>Создать контракт</h1>
+    <form action="/contracts" method="post">
+        <div class="form-group">
+            <label for="contractor_id">Контрагент:</label>
+            <select id="contractor_id" name="contractor_id" required>
+                {{range .Contractors}}
+                <option value="{{.ID}}">{{.Name}}</option>
+                {{end}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="type">Тип:</label>
+            <input type="text" id="type" name="type" required>
+        </div>
+        <div class="form-group">
+            <label for="number">Номер:</label>
+            <input type="text" id="number" name="number" required>
+        </div>
+        <div class="form-group

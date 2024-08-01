@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контракты</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<header class="header">
+    <div class="logo">Мой сайт</div>
+    <nav>
+        <a href="/dashboard">Главная</a>
+        <a href="/contractors">Контрагенты</a>
+        <a href="/contracts">Контракты</a>
+        <a href="/logout">Выйти</a>
+    </nav>
+</header>
+
+<div class="container">
+    <h1>Контракты</h1>
+    <a href="/contracts/new" class="btn">Добавить контракт</a>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Контрагент</th>
+            <th>Тип</th>
+            <th>Номер</th>
+            <th>Дата</th>
+            <th>Инициатор</th>
+            <th>Сумма</th>
+            <th>Предмет</th>
+            <th>Статус</th>
+            <th>Дата начала</th>
+            <th>Дата окончания</th>
+            <th>Порядок взаиморасчетов</th>
+            <th>Регулярный</th>
+            <th>Статья</th>
+            <th>Счет оплаты</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{range .Contracts}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td>{{.Contractor.Name}}</td>
+            <td>{{.Type}}</td>
+            <td>{{.Number}}</td>
+            <td>{{.Date}}</td>
+            <td>{{.Initiator}}</td>
+            <td>{{.Amount}}</td>
+            <td>{{.Subject}}</td>
+            <td>{{.Status}}</td>
+            <td>{{.StartDate}}</td>
+            <td>{{.EndDate}}</td>
+            <td>{{.PaymentProcedure}}</td>
+            <td>{{.IsRegular}}</td>
+            <td>{{.Article}}</td>
+            <td>{{.PaymentAccounts}}</td>
+        </tr>
+        {{end}}
+        </tbody>
+    </table>
+</div>
+
+<footer class="footer">
+    <p>Мой сайт © 2024</p>
+</footer>
+</body>
+</html>

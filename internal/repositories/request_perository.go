@@ -1,9 +1,9 @@
 package repositories
 
 import (
-	"github.com/ryantrue/contractkeeper/internal/models"
-
 	"github.com/jinzhu/gorm"
+	"github.com/ryantrue/contractkeeper/internal/models"
+	"github.com/sirupsen/logrus"
 )
 
 type RequestRepository interface {
@@ -15,11 +15,12 @@ type RequestRepository interface {
 }
 
 type requestRepository struct {
-	DB *gorm.DB
+	DB     *gorm.DB
+	logger *logrus.Logger
 }
 
-func NewRequestRepository(db *gorm.DB) RequestRepository {
-	return &requestRepository{DB: db}
+func NewRequestRepository(db *gorm.DB, logger *logrus.Logger) RequestRepository {
+	return &requestRepository{DB: db, logger: logger}
 }
 
 func (r *requestRepository) Save(request *models.Request) error {
@@ -28,13 +29,19 @@ func (r *requestRepository) Save(request *models.Request) error {
 
 func (r *requestRepository) FindAll() ([]models.Request, error) {
 	var requests []models.Request
-	err := r.DB.Find(&requests).Error
+	err := r.DB.Where("deleted_at IS NULL").Find(&requests).Error
+	if err != nil {
+		r.logger.Errorf("Error finding requests: %v", err)
+	}
 	return requests, err
 }
 
 func (r *requestRepository) FindByID(id uint) (*models.Request, error) {
 	var request models.Request
-	err := r.DB.First(&request, id).Error
+	err := r.DB.Where("deleted_at IS NULL").First(&request, id).Error
+	if err != nil {
+		r.logger.Errorf("Error finding request by ID: %v", err)
+	}
 	return &request, err
 }
 
@@ -43,5 +50,5 @@ func (r *requestRepository) Update(request *models.Request) error {
 }
 
 func (r *requestRepository) Delete(id uint) error {
-	return r.DB.Delete(&models.Request{}, id).Error
+	return r.DB.Model(&models.Request{}).Where("id = ?", id).Update("deleted_at", gorm.Expr("NOW()")).Error
 }
